@@ -1,6 +1,6 @@
 let words = [];
 let score = 0;
-let timeLeft = 5; // Initial timer set to 60 seconds
+let timeLeft = 30; // Initial timer set to 60 seconds
 let timerInterval;
 let gameStarted = false;
 
@@ -30,7 +30,7 @@ function startPro() {
     
     console.log(gameStarted)
     console.log('Space bar pressed! Starting...');
-    timeLeft = 5;
+    timeLeft = 30;
     score = 0;
     initWordAndScore(); // Initialize with the first word
     startTimer(); // Start the timer after fetching words
@@ -46,7 +46,7 @@ function startPro2() {
   if (!gameStarted) {
     console.log(gameStarted)
     console.log('Space bar pressed! Starting...');
-    timeLeft = 5;
+    timeLeft = 30;
     score = 0;
     initWordAndScore(); // Initialize with the first word
     startTimer(); // Start the timer after fetching words
