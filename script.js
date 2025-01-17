@@ -1,6 +1,6 @@
 let words = [];
 let score = 0;
-let timeLeft = 30; // Initial timer set to 60 seconds
+let timeLeft = 5; // Initial timer set to 60 seconds
 let timerInterval;
 let gameStarted = false;
 
@@ -9,6 +9,8 @@ const skipSound = new Audio('./FX/skip.mp3');
 const endSound = new Audio('./FX/end.mp3'); 
 const clockSound = new Audio('./FX/tick.mp3'); 
 const startSound = new Audio('./FX/start.mp3'); 
+
+const wordBox = document.getElementById('word-box'); // The right-hand side box for displaying skipped or correct words
 
 const wordElement = document.getElementById('word');
 const scoreElement = document.getElementById('score');
@@ -28,16 +30,28 @@ function startGame() {
   document.addEventListener('keydown', function(event) {
     // Check if the pressed key is the space bar
     if (event.code === 'Space' & !gameStarted) {
+      gameStarted = true;
+      console.log(gameStarted)
       console.log('Space bar pressed! Starting...');
+      timeLeft = 5;
+      score = 0;
       initWordAndScore(); // Initialize with the first word
       startTimer(); // Start the timer after fetching words
-      gameStarted = true;
+      document.addEventListener('keydown', handleKeyPress);
     }
   });
 }
 
 function getRandomWord() {
   return words[Math.floor(Math.random() * words.length)];
+}
+
+function addWordToHistory(word, color) {
+  // Create a new div element to hold the word with the specified color
+  const wordDiv = document.createElement('div');
+  wordDiv.textContent = word;
+  wordDiv.style.color = color;
+  wordBox.appendChild(wordDiv); // Add it to the word-box
 }
 
 function initWordAndScore() {
@@ -104,19 +118,30 @@ function endGame() {
   wordElement.style.color = 'red';
   document.removeEventListener('keydown', handleKeyPress);
   endSound.play();
+  gameStarted = false;
+
+  
+  startGame();
+  console.log(gameStarted)
 }
 
 function handleKeyPress(event) {
+
+  console.log("booboo");
+
   if (event.code === 'Space' & gameStarted) {
     event.preventDefault(); // Prevent the default spacebar scroll behavior
     updateWordAndScore();
+    addWordToHistory(wordElement.textContent, 'green'); // Add word in green (correct)
   } else if (event.code === 'KeyS' & gameStarted) {
     event.preventDefault(); // Prevent default action if needed
     replaceWord(); // Replace word without affecting score or timer
+    addWordToHistory(wordElement.textContent, 'red'); // Add word in red (skipped)
   }
 }
 
-document.addEventListener('keydown', handleKeyPress);
+
+
 // Prevent mouse events from interfering with the game
 document.addEventListener('mousemove', (event) => {
   event.preventDefault(); // Prevent default behavior on mousemove

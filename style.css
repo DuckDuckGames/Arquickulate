@@ -39,3 +39,66 @@ h1 {
 .pulsing {
   animation: pulse 0.5s infinite;
 }
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.word-box {
+  
+  width: 300px;
+  background-color: #f4f4f4;
+  border-left: 2px solid #ccc;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.word-box h3 {
+  margin-top: 0;
+}
+
+#wordList {
+  list-style: none;
+  padding: 0;
+  max-height: calc(100% - 140px); /* Adjust for input and button height */
+  overflow-y: auto;
+}
+
+#wordList li {
+  background-color: #e0e0e0;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#wordInput {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+#addButton {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#addButton:hover {
+  background-color: #0056b3;
+}
