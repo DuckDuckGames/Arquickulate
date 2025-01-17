@@ -25,24 +25,47 @@ async function fetchWords() {
   words = await response.json();
 }
 
+function startPro() {
+  if (event.code === 'Space' & !gameStarted) {
+    
+    console.log(gameStarted)
+    console.log('Space bar pressed! Starting...');
+    timeLeft = 5;
+    score = 0;
+    initWordAndScore(); // Initialize with the first word
+    startTimer(); // Start the timer after fetching words
+    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
+    gameStarted = true;
+  }
+}
+
+function startPro2() {
+  if (!gameStarted) {
+    console.log(gameStarted)
+    console.log('Space bar pressed! Starting...');
+    timeLeft = 5;
+    score = 0;
+    initWordAndScore(); // Initialize with the first word
+    startTimer(); // Start the timer after fetching words
+    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
+    gameStarted = true;
+  }
+}
+
 function startGame() {
+
+  //document.addEventListener('touchstart', startPro);
+  //document.addEventListener('touchmove', startPro);
+  document.addEventListener('touchend', startPro2);
   // Add an event listener for the keydown event
-  document.addEventListener('keydown', function(event) {
-    // Check if the pressed key is the space bar
-    if (event.code === 'Space' & !gameStarted) {
-      gameStarted = true;
-      console.log(gameStarted)
-      console.log('Space bar pressed! Starting...');
-      timeLeft = 5;
-      score = 0;
-      initWordAndScore(); // Initialize with the first word
-      startTimer(); // Start the timer after fetching words
-      document.addEventListener('keydown', handleKeyPress);
-      document.addEventListener('touchstart', handleTouchStart);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleTouchEnd);
-    }
-  });
+  document.addEventListener('keydown', startPro);
+  
 }
 
 function getRandomWord() {
@@ -146,6 +169,7 @@ function handleKeyPress(event) {
 // Handle touch events for mobile
 function handleTouchStart(event) {
   startTouchY = event.touches[0].clientY; // Record the starting Y position of the touch
+  console.log("herpsss");
 }
 
 function handleTouchMove(event) {
@@ -155,7 +179,7 @@ function handleTouchMove(event) {
 function handleTouchEnd(event) {
   const endTouchY = event.changedTouches[0].clientY; // Record the ending Y position of the touch
   const touchDeltaY = startTouchY - endTouchY;
-
+  console.log("herps");
   if (!gameStarted) {
     if (touchDeltaY > 50) {
       // If the user swiped up before the game started
@@ -167,9 +191,11 @@ function handleTouchEnd(event) {
   if (touchDeltaY > 50) {
     // Swipe up: acts like pressing Space
     updateWordAndScore();
+    addWordToHistory(wordElement.textContent, 'green'); 
   } else if (Math.abs(touchDeltaY) < 10) {
     // Tap: acts like pressing 'S'
     replaceWord();
+    addWordToHistory(wordElement.textContent, 'red'); // Add word in red (skipped)
   }
 }
 
