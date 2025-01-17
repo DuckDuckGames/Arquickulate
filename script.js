@@ -38,6 +38,9 @@ function startGame() {
       initWordAndScore(); // Initialize with the first word
       startTimer(); // Start the timer after fetching words
       document.addEventListener('keydown', handleKeyPress);
+      document.addEventListener('touchstart', handleTouchStart);
+      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('touchend', handleTouchEnd);
     }
   });
 }
@@ -140,7 +143,35 @@ function handleKeyPress(event) {
   }
 }
 
+// Handle touch events for mobile
+function handleTouchStart(event) {
+  startTouchY = event.touches[0].clientY; // Record the starting Y position of the touch
+}
 
+function handleTouchMove(event) {
+  // Nothing to do on move; we'll act on touch end
+}
+
+function handleTouchEnd(event) {
+  const endTouchY = event.changedTouches[0].clientY; // Record the ending Y position of the touch
+  const touchDeltaY = startTouchY - endTouchY;
+
+  if (!gameStarted) {
+    if (touchDeltaY > 50) {
+      // If the user swiped up before the game started
+      startGame();
+    }
+    return;
+  }
+
+  if (touchDeltaY > 50) {
+    // Swipe up: acts like pressing Space
+    updateWordAndScore();
+  } else if (Math.abs(touchDeltaY) < 10) {
+    // Tap: acts like pressing 'S'
+    replaceWord();
+  }
+}
 
 // Prevent mouse events from interfering with the game
 document.addEventListener('mousemove', (event) => {
